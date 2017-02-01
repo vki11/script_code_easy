@@ -1,0 +1,27 @@
+#!/bin/bash
+#bec
+#Balakumara Vignesh M
+#To open emacs at the line of error, as given in compiler output
+
+if [ $# -eq 0 ]
+then
+    emacsclient -c -t
+    #echo test
+else
+    data=$(echo `echo $1 | sed -e 's,:,+,1'` | cut -d':' -f1,2);
+    data_1=$(echo $data|cut -d '+' -f1);
+    data_2=$(echo $data|cut -d '+' -f2);
+    data_3=" +"    
+    
+    size1=${#data_1}
+    size2=${#data_2}
+    if [ $size1 -eq $size2 ]
+    then
+	#echo $data_1
+	emacsclient -c -t $data_1
+    else
+	#echo $data_3$data_2 $data_1
+	emacsclient -c -t $data_3$data_2 $data_1
+    fi
+fi
+

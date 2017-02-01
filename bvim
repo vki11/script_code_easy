@@ -1,0 +1,30 @@
+#!/bin/bash
+#bvim
+#Balakumara Vignesh M
+#To open vim at the line of error from compiler output
+
+if [ $# -eq 0 ]
+then
+    vim
+else
+    data=$(echo $1 | cut -d ":" -f1,2 --output-delimiter=" +");
+    #data=$(echo `echo $1 | sed -e 's,:, +,1'` | cut -d':' -f1);    
+    #vim $data
+    data_fn=$(echo $data|cut -d '+' -f1);
+    data_ln=$(echo $data|cut -d '+' -f2);
+    extra=$2
+
+    if [[ ${extra:0:1} == "+" ]]
+    then
+	#echo "vim" $data_fn $extra
+	vim $data_fn $extra	
+	flag=0
+    else
+	flag=1
+    fi
+    if [ $flag -eq 1 ]
+    then 
+	#echo "vim" $data
+	vim $data
+    fi
+fi
