@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+#bvrepet
+#Balakumara Vignesh M
+#To repeat a particular command n times with n seconds time gap
+#until the reqd return value is obtained
+
+
+import sys
+import optparse
+import subprocess
+import time
+
+in_data = optparse.OptionParser();
+
+in_data.add_option('-i','--interval',dest='timer',help='Time gap in seconds b/w each check',type=int);
+in_data.add_option('-t','--tries',dest='tries',help='Total number of tries',type=int);
+in_data.add_option('-r','--return-val',dest='ret_val',help='Return value to check for',type=int);
+(options, args) = in_data.parse_args();
+
+
+cmds = ' '.join(args);
+
+if len(cmds) == 0:
+    cmds = raw_input("Enter the command to test");
+
+if options.timer is None:
+    timer = 1
+else:
+    timer = int(options.timer);
+
+if options.tries is None:
+    tries = 10
+else:
+    tries = int(options.tries);
+
+if options.ret_val is None:
+    ret_val = 0
+else:
+    ret_val = int(options.ret_val);
+
+print "Repeating command: \n%s" %cmds
+print "For %d times, with %d s delay, checking status - %d\n\n" %(tries,timer,ret_val)
+
+
+ret_val_check = 1
+tries_check = 0
+
+while ret_val_check != ret_val :
+    tries_check = tries_check + 1;
+    print "Try...%d" %tries_check
+    ret_val_check = subprocess.call(cmds, shell=True);
+    if ret_val_check == ret_val :
+        break
+
+    print "Status...%d\n" %ret_val_check
+    time.sleep(timer);
+
+    if tries_check == tries:
+        print "Failed ...\nExiting..."
+#        break
+        exit()
+print "\nSuccess..."
+
+
+
+
+
